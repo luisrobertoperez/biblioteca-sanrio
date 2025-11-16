@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="search-container">
+    <h2>🔍 Buscar en Mis Apuntes</h2>
+    <form method="POST" class="search-form">
+        <div class="form-group">
+            <input type="text" name="search_term" placeholder="Escribe el título a buscar..." required>
+            <button type="submit" class="btn-primary">Buscar</button>
+        </div>
+    </form>
+
+    {% if notes %}
+    <div class="search-results">
+        <h3>Encontramos {{ notes|length }} nota(s):</h3>
+        <div class="notes-grid">
+            {% for note in notes %}
+            <div class="note-card">
+                <h3>{{ note.title }}</h3>
+                <p class="note-date">{{ note.date_created.strftime('%d/%m/%Y') }}</p>
+                <div class="note-content">
+                    {{ note.content[:100] }}{% if note.content|length > 100 %}...{% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% elif request.method == 'POST' %}
+    <div class="empty-state">
+        <p>No se encontraron notas con ese término.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Header del Dashboard -->
+<div class="dashboard-header">
+    <div>
+        <h2 style="color: var(--pink-dark); margin-bottom: 0.5rem;">
+            📚 Mis Apuntes Kawaii
+        </h2>
+        <p style="color: var(--text); opacity: 0.8;">
+            ¡Hola {{ current_user.username }}! Aquí están todos tus apuntes organizados 🎀
+        </p>
+    </div>
+    <a href="{{ url_for('add_note') }}" class="btn-primary">
+        ✨ Crear Nueva Nota
+    </a>
+</div>
+
+<!-- Estadísticas Rápidas -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    <div style="background: var(--white); padding: 1.5rem; border-radius: 20px; text-align: center; border: 2px solid var(--pink);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📖</div>
+        <div style="font-size: 1.5rem; font-weight: bold; color: var(--pink-dark);">{{ notes|length }}</div>
+        <div style="color: var(--text);">Notas Totales</div>
+    </div>
+    
+    <div style="background: var(--white); padding: 1.5rem; border-radius: 20px; text-align: center; border: 2px solid var(--blue);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎀</div>
+        <div style="font-size: 1.5rem; font-weight: bold; color: var(--pink-dark);">{{ themes|length if themes else 4 }}</div>
+        <div style="color: var(--text);">Temas Sanrio</div>
+    </div>
+    
+    <div style="background: var(--white); padding: 1.5rem; border-radius: 20px; text-align: center; border: 2px solid var(--purple);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭐</div>
+        <div style="font-size: 1.5rem; font-weight: bold; color: var(--pink-dark);">100%</div>
+        <div style="color: var(--text);">Kawaii Level</div>
+    </div>
+</div>
+
+<!-- Grid de Notas -->
+{% if notes %}
+<div class="notes-grid">
+    {% for note in notes %}
+    {% set theme = ['hello-kitty-theme', 'my-melody-theme', 'kuromi-theme', 'cinnamoroll-theme'] | random %}
+    {% set character = ['🐱', '🐰', '👿', '🐶'] | random %}
+    {% set theme_name = ['Hello Kitty', 'My Melody', 'Kuromi', 'Cinnamoroll'] | random %}
+    
+    <div class="note-card {{ theme }} floating">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <h3 style="margin: 0; flex: 1;">
+                <span style="font-size: 1.5rem; margin-right: 0.5rem;">{{ character }}</span>
+                {{ note.title }}
+            </h3>
+            <div style="background: var(--yellow); padding: 0.3rem 0.8rem; border-radius: 15px; border: 1px dashed var(--pink); font-size: 0.8rem;">
+                {{ theme_name }}
+            </div>
+        </div>
+        
+        <p class="note-date">
+            📅 Creado: {{ note.date_created.strftime('%d/%m/%Y a las %H:%M') }}
+        </p>
+        
+        <div class="note-content">
+            {% if note.content %}
+                {{ note.content[:200] }}{% if note.content|length > 200 %}...{% endif %}
+            {% else %}
+                <span style="color: var(--text); opacity: 0.6;">Esta nota no tiene contenido aún...</span>
+            {% endif %}
+        </div>
+        
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: space-between;">
+            <small style="background: var(--mint); padding: 0.3rem 0.8rem; border-radius: 10px; border: 1px solid var(--blue);">
+                {{ note.content|length if note.content else 0 }} caracteres
+            </small>
+            <small style="background: var(--pink-light); padding: 0.3rem 0.8rem; border-radius: 10px; border: 1px solid var(--pink);">
+                {% if note.content and note.content|length > 150 %}📖 Larga{% else %}📓 Corta{% endif %}
+            </small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<!-- Estado Vacío Mejorado -->
+<div class="empty-state">
+    <div style="font-size: 4rem; margin-bottom: 1rem;">
+        🐱 🐰 🐶 👿
+    </div>
+    <h3 style="color: var(--pink-dark); margin-bottom: 1rem;">¡Oh no! No tienes notas aún</h3>
+    <p style="font-size: 1.1rem; margin-bottom: 2rem; color: var(--text);">
+        Los personajes de Sanrio están esperando para ayudarte con tus estudios.<br>
+        ¡Crea tu primera nota y haz tu biblioteca kawaii!
+    </p>
+    <a href="{{ url_for('add_note') }}" class="btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+        <span>✨</span>
+        Crear Mi Primera Nota
+        <span>🌟</span>
+    </a>
+    
+    <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <div style="background: var(--pink-light); padding: 1rem; border-radius: 15px; text-align: center;">
+            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📚</div>
+            <div style="font-weight: bold;">Apuntes de Clase</div>
+        </div>
+        <div style="background: var(--blue-light); padding: 1rem; border-radius: 15px; text-align: center;">
+            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔬</div>
+            <div style="font-weight: bold;">Notas de Estudio</div>
+        </div>
+        <div style="background: var(--mint); padding: 1rem; border-radius: 15px; text-align: center;">
+            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💡</div>
+            <div style="font-weight: bold;">Ideas y Proyectos</div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Tips Kawaii -->
+<div style="background: linear-gradient(135deg, var(--yellow), var(--pink-light)); padding: 1.5rem; border-radius: 20px; margin-top: 3rem; border: 2px dashed var(--pink);">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="font-size: 2rem;">💝</div>
+        <div>
+            <h4 style="color: var(--pink-dark); margin-bottom: 0.5rem;">Tip Kawaii del Día</h4>
+            <p style="color: var(--text); margin: 0;">
+                ¡Organiza tus notas por materias usando diferentes personajes de Sanrio! 
+                Hello Kitty para matemáticas, My Melody para literatura... ¡Sé creativa! 🎀
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

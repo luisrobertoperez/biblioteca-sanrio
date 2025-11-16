@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎀 Biblioteca Sanrio Kawaii 🎀</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="sanrio-header">
+        <div class="nav-container">
+            <h1 class="nav-logo">📚 Biblioteca Sanrio 🌸</h1>
+            {% if current_user.is_authenticated %}
+            <div class="nav-links">
+                <a href="{{ url_for('dashboard') }}">🏠 Inicio</a>
+                <a href="{{ url_for('add_note') }}">✨ Nueva Nota</a>
+                <a href="{{ url_for('search') }}">🔍 Buscar</a>
+                <a href="{{ url_for('logout') }}">👋 {{ current_user.username }}</a>
+            </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section solo para login/register -->
+        {% if not current_user.is_authenticated %}
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>¡Bienvenida a tu Biblioteca Kawaii! 🎀</h1>
+                <p>Organiza tus apuntes con el estilo adorable de Sanrio. Hello Kitty, My Melody, Kuromi y más te acompañarán en tus estudios.</p>
+                
+                <div class="characters-grid">
+                    <div class="character-card hello-kitty floating">
+                        <div class="character-icon">🐱</div>
+                        <div class="character-name">Hello Kitty</div>
+                        <div class="character-theme">Tema Rosa</div>
+                    </div>
+                    
+                    <div class="character-card my-melody floating">
+                        <div class="character-icon">🐰</div>
+                        <div class="character-name">My Melody</div>
+                        <div class="character-theme">Tema Azul</div>
+                    </div>
+                    
+                    <div class="character-card kuromi floating">
+                        <div class="character-icon">👿</div>
+                        <div class="character-name">Kuromi</div>
+                        <div class="character-theme">Tema Morado</div>
+                    </div>
+                    
+                    <div class="character-card cinnamoroll floating">
+                        <div class="character-icon">🐶</div>
+                        <div class="character-name">Cinnamoroll</div>
+                        <div class="character-theme">Tema Celeste</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Mensajes Flash -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">🎀 {{ message }} 🌸</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Contenido Principal -->
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer style="text-align: center; margin-top: 4rem; padding: 2rem; background: linear-gradient(135deg, var(--pink-light), var(--blue-light)); border-radius: 25px 25px 0 0;">
+        <div style="font-size: 1.5rem; margin-bottom: 1rem;">
+            🌸 🎀 🐱 🐰 🐶 👿 🎀 🌸
+        </div>
+        <p style="font-weight: bold; color: var(--text);">
+            Biblioteca Sanrio - Hecho con 💖 para estudios kawaii
+        </p>
+    </footer>
+</body>
+</html>

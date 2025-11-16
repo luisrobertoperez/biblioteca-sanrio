@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Crear Nueva Nota</h2>
+    <form method="POST" class="note-form">
+        <div class="form-group">
+            <label for="title">Título (requerido):</label>
+            <input type="text" id="title" name="title" placeholder="Ej: Matemáticas - Álgebra" required>
+        </div>
+        <div class="form-group">
+            <label for="content">Contenido:</label>
+            <textarea id="content" name="content" rows="12" placeholder="Escribe tus apuntes aquí..."></textarea>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 Guardar Nota</button>
+            <a href="{{ url_for('dashboard') }}" class="btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
